@@ -18,6 +18,8 @@ const Cards = () => {
     fetchBlogs();
   }, []);
 
+  
+
   return (
     <div className="cardsContainer">
       {blogs.map((blog) => (

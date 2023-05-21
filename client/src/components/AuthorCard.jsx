@@ -4,7 +4,7 @@ import cardImg from "../assets/cardimg.png";
 
 const AuthorCard = () => {
   return (
-    <Card style={{ width: 300 }}>
+    <Card style={{ width: 300, height:567}}>
       <img
         src="https://thumbs.dreamstime.com/b/travel-banner-mountain-inscription-vector-mountains-sun-inscriptions-live-adventure-begins-background-92724641.jpg"
         alt="Ad"

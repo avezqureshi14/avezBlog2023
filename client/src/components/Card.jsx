@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import cardImg from "../assets/cardimg.png";
 import { Card, Button, message } from "antd";
 import { Link } from "react-router-dom";
@@ -7,8 +7,9 @@ import { formatDistanceToNow } from "date-fns";
 
 const { Meta } = Card;
 
+
 const CustomCard = ({ blog, onDelete }) => {
-  
+  const [login, setLogin] = useState(false);
   const description = blog.description;
 
   // Function to limit the description to a certain number of characters
@@ -18,7 +19,27 @@ const CustomCard = ({ blog, onDelete }) => {
     }
     return text.slice(0, limit) + "...";
   };
-
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token || token === "") {
+      setLogin(false);
+    } else {
+      // Verify the token or perform any necessary checks here
+      // For example, you can decode the token and check its validity
+      try {
+        const decodedToken = JSON.parse(atob(token.split(".")[1]));
+        // Assuming the token has an 'expiry' property, you can compare it with the current time
+        if (decodedToken.expiry < Date.now() / 1000) {
+          setLogin(false);
+        } else {
+          setLogin(true);
+        }
+      } catch (error) {
+        // Error occurred while decoding or validating the token
+        setLogin(false);
+      }
+    }
+  }, []);
   const handleDelete = async () => {
   try {
     // Make API call to delete the blog
@@ -59,12 +80,20 @@ const CustomCard = ({ blog, onDelete }) => {
           }
         />
       </Link>
+      {login ? ( 
+      <>
       <Button type="primary" onClick={handleDelete}>
         Delete
       </Button>
       <Link to={`/update/${blog._id}`}>
         <Button type="primary">Update</Button>
       </Link>
+      </>
+      ):(
+        <></>
+      )
+      }
+  
     </Card>
   );
 };
